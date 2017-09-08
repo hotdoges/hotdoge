@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, HashRouter } from 'react-router-dom';
 import { render } from 'react-dom';
+
+import LoginApp from './LoginApp.jsx';
+import { DatePicker } from 'antd';
+import 'antd/dist/antd.css';
+
+
 
 function renderMyApp() {
     if(document.getElementById('app'))
         return render((
-            <h1>欢迎登陆</h1>
+            <DatePicker />
         ), document.getElementById('app'));
     else
-        console.log('');
+        console.log('err');
 }
 
 export {

@@ -2,6 +2,18 @@
 
 
 Router.route('/', {
+    layoutTemplate:'Login',
+    action: function() {
+        this.render();
+        this.next();
+    },
+    onBeforeAction: function() {
+        document.title = "登录页面";
+        this.next();
+    }
+});
+
+Router.route('/test', {
     layoutTemplate:'Test',
     action: function() {
         this.render();
