@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Route, HashRouter, Link } from 'react-router-dom';
+import Register from './Register.jsx';
 
 import {Button, Form, Input, Icon, Checkbox} from 'antd';
 // import '../../../css/login.css'
@@ -71,8 +73,9 @@ class LoginApp extends React.Component {
                             })(
                                 <Checkbox style={{ float: 'left' }}>记住账号</Checkbox>
                             )}
-                            <a className="login-form-forgot" href="">忘记密码</a>
-                            <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
+                            <a className="login-form-forgot" href="" style={{ float: 'right' }}>忘记密码</a>
+                            <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '100%' }}>登录</Button>
+                            <Link to="/register">注册</Link>
                         </Form.Item>
                     </Form>
                 </div>
