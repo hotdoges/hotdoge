@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class MainLayout extends React.Component {
+class OneLayout extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -9,15 +9,15 @@ class MainLayout extends React.Component {
     render() {
         return (
             <div >
-                <h1>我是Main</h1>
+                <h1>我是1号Layout</h1>
                 {/* {this.props.children} */}
             </div>
         );
     }
 }
 
-MainLayout.propTypes = {
+OneLayout.propTypes = {
 
 }
 
-export default MainLayout;
+export default OneLayout;

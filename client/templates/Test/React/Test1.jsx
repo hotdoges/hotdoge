@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Test1 extends React.Component {
     constructor(props) {
-        super(prop);
+        super(props);
         this.state = {
             str: 'strTest1',
         };

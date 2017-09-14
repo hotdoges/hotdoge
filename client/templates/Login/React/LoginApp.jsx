@@ -76,7 +76,7 @@ class LoginApp extends React.Component {
                             )}
                             <a className="login-form-forgot" href="" style={{ float: 'right' }}>忘记密码</a>
                             <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '100%' }}>登录</Button>
-                            <a href="/register">注册</a>
+                            <Link to="/register">注册</Link>
                         </Form.Item>
                     </Form>
                 </div>
