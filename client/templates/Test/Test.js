@@ -1,4 +1,4 @@
-import { renderMyApp } from './React/Test.jsx';
+import { renderMyApp } from './React/Index.jsx';
 
 Template.Test.onRendered(function() {
     renderMyApp();

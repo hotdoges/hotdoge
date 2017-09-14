@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router'
 
 import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
 const Option = Select.Option;
@@ -239,4 +240,4 @@ class Register extends React.Component {
 }
 
 const WrappedRegisterForm = Form.create()(Register);
-export default WrappedRegisterForm;
+export default withRouter(WrappedRegisterForm);

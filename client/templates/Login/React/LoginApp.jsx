@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, HashRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router'
 import Register from './Register.jsx';
 
 import {Button, Form, Input, Icon, Checkbox} from 'antd';
-// import '../../../css/login.css'
 
 class LoginApp extends React.Component {
     constructor(props) {
@@ -51,6 +51,7 @@ class LoginApp extends React.Component {
                 textAlign: 'center'
              }}>
                 <div style={{ width: '300px' }}>
+                    <h1>{this.props.route.str}</h1>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <Form.Item>
                             {getFieldDecorator('userName', {
@@ -75,7 +76,7 @@ class LoginApp extends React.Component {
                             )}
                             <a className="login-form-forgot" href="" style={{ float: 'right' }}>忘记密码</a>
                             <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '100%' }}>登录</Button>
-                            <Link to="/register">注册</Link>
+                            <a href="/register">注册</a>
                         </Form.Item>
                     </Form>
                 </div>
@@ -85,7 +86,7 @@ class LoginApp extends React.Component {
 }
 
 LoginApp.PropTypes = {
-    str: PropTypes.string.isRequired
+    // str: PropTypes.string.isRequired
 }
 
 const WrappedNormalLoginForm = Form.create()(LoginApp);
