@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route, HashRouter, Link } from 'react-router-dom';
 import { render } from 'react-dom';
+import { BrowserRouter as Router, 
+    Route, HashRouter, BrowserRouter, Link } from 'react-router-dom';
 
 import MainLayout from './Layout/MainLayout.jsx';
 import OneLayout from './Layout/OneLayout.jsx';
@@ -11,11 +12,10 @@ import Test2 from './Test2.jsx';
 function renderMyApp() {
     if (document.getElementById('app'))
         return render((
-            <HashRouter >
+            <Router basename="/test">
                 <div>
-                    <h1>我是router</h1>
-                    <ul>
-                        <li><Link to="/">main</Link></li>
+                    <ul style={{fontSize: '18px'}}>
+                        <li><Link to="/main">main</Link></li>
                         <li><Link to="/one">one</Link></li>
                         <li><Link to="/test1">test1</Link></li>
                         <li><Link to="/test2">test2</Link></li>
@@ -24,11 +24,11 @@ function renderMyApp() {
                     <hr />
 
                     <Route exact path="/" component={MainLayout} />
-                    <Route path="/one" component={OneLayout} />
-                    <Route path="/test1" component={Test1} />
-                    <Route path="/test2" component={Test2} />
+                    <Route exact path="#/one" component={OneLayout} />
+                    <Route exact path="/test1" component={Test1} />
+                    <Route exact path="/test2" component={Test2} />
                 </div>
-            </HashRouter>
+            </Router>
         ), document.getElementById('app'));
     else
         console.log('null');
