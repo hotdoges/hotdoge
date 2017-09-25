@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, HashRouter, Link } from 'react-router-dom';
-import { withRouter } from 'react-router'
-import Register from './Register.jsx';
+import { createContainer } from 'meteor/react-meteor-data';
 
 import {Button, Form, Input, Icon, Checkbox} from 'antd';
+import Register from './Register.jsx';
+
+import { Users } from '../../../../imports/collections/users.js';
+
 
 class LoginApp extends React.Component {
     constructor(props) {
@@ -13,6 +15,10 @@ class LoginApp extends React.Component {
             userName: '',
             password: ''
         };
+    }
+
+    handleClick() {
+        this.props.history.push('/register');
     }
 
     checkLoginBtnDisabled() {
@@ -33,7 +39,21 @@ class LoginApp extends React.Component {
         this.props.form.validateFields((err, values) => {
             if(!err) {
                 console.log('收到的值: ', values);
-                console.log('账号：', values.userName);
+
+                const user = Users.findOne({'account': values.userName});
+                if(!user) {
+                    console.log("账号不正确");
+                    document.getElementById('tip').innerHTML = "账号不正确";
+                    return;
+                } else if (user.password == values.password){
+                    console.log("成功登录");
+                    window.location = "/test/";
+                    return;
+                } else {
+                    console.log("密码错误");
+                    document.getElementById('tip').innerHTML = "密码错误";
+                }
+                
             }else {
                 console.log('err: ', err)
             }
@@ -51,7 +71,6 @@ class LoginApp extends React.Component {
                 textAlign: 'center'
              }}>
                 <div style={{ width: '300px' }}>
-                    <h1>{this.props.route.str}</h1>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <Form.Item>
                             {getFieldDecorator('userName', {
@@ -62,11 +81,12 @@ class LoginApp extends React.Component {
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
-                                rules: [{ required: true, message: '请输入密码'}],
+                                rules: [{ required: true, min: 3, message: '请输入密码'}],
                             })(
                                 <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="密码" />
                             )}
                         </Form.Item>
+                        <span id="tip" style={{ fontSize: 8, color: 'red' }} > </span>
                         <Form.Item>
                             {getFieldDecorator('remember', {
                                 valuePropName: 'checked',
@@ -76,7 +96,7 @@ class LoginApp extends React.Component {
                             )}
                             <a className="login-form-forgot" href="" style={{ float: 'right' }}>忘记密码</a>
                             <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '100%' }}>登录</Button>
-                            <Link to="/register">注册</Link>
+                            <a onClick={this.handleClick.bind(this)}>注册</a>
                         </Form.Item>
                     </Form>
                 </div>
@@ -90,4 +110,8 @@ LoginApp.PropTypes = {
 }
 
 const WrappedNormalLoginForm = Form.create()(LoginApp);
-export default WrappedNormalLoginForm;
+export default createContainer(() => {
+    return {
+        users: Users.find({}).fetch(),
+    };
+}, WrappedNormalLoginForm);

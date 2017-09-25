@@ -11,16 +11,15 @@ class Test1 extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>我是1号,
-                    {this.state.str}
-                </h1>
-            </div>
+            <li>{this.props.user._id} , {this.props.user.name}</li>
         );
     }
 }
 
 Test1.propTypes = {
+    //这个组件通过React prop去得到并显示任务
+    //我们可以用propTypes去指明哪些是必须的
+    user: PropTypes.object.isRequired,
 
 }
 

@@ -22,6 +22,8 @@ class Register extends React.Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+            } else {
+                console.log('错误信息：', err);
             }
         });
     }
@@ -33,7 +35,7 @@ class Register extends React.Component {
     checkPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('password')) {
-            callback('Two passwords that you enter is inconsistent!');
+            callback('两次输入密码不一致！');
         } else {
             callback();
         }
@@ -184,7 +186,7 @@ class Register extends React.Component {
                         label="手机号码"
                     >
                         {getFieldDecorator('phone', {
-                            rules: [{ required: true, message: 'Please input your phone number!' }],
+                            rules: [{ required: true, message: '请输入你的电话号码！' }],
                         })(
                             <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
                             )}
@@ -194,12 +196,12 @@ class Register extends React.Component {
                         label="个人网址"
                     >
                         {getFieldDecorator('website', {
-                            rules: [{ required: true, message: 'Please input website!' }],
+                            rules: [{ required: true, message: '请输入个人网站！' }],
                         })(
                             <AutoComplete
                                 dataSource={websiteOptions}
                                 onChange={this.handleWebsiteChange}
-                                placeholder="website"
+                                placeholder="个人主页"
                             >
                                 <Input />
                             </AutoComplete>
@@ -213,13 +215,13 @@ class Register extends React.Component {
                         <Row gutter={8}>
                             <Col span={12}>
                                 {getFieldDecorator('captcha', {
-                                    rules: [{ required: true, message: 'Please input the captcha you got!' }],
+                                    rules: [{ required: true, message: '请输入您收到的验证码！' }],
                                 })(
                                     <Input size="large" />
                                     )}
                             </Col>
                             <Col span={12}>
-                                <Button size="large">Get captcha</Button>
+                                <Button size="large">获取验证码</Button>
                             </Col>
                         </Row>
                     </Form.Item>
@@ -227,11 +229,11 @@ class Register extends React.Component {
                         {getFieldDecorator('agreement', {
                             valuePropName: 'checked',
                         })(
-                            <Checkbox>I have read the <a href="">agreement</a></Checkbox>
+                            <Checkbox>我已经阅读<a href="">协议</a></Checkbox>
                             )}
                     </Form.Item>
                     <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit">Register</Button>
+                        <Button type="primary" htmlType="submit">注册</Button>
                     </Form.Item>
                 </Form>
             </div>
