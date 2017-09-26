@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router'
+
+import { createContainer } from 'meteor/react-meteor-data';
+import { Users } from '../../../../imports/collections/users.js';
 
 import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
 const Option = Select.Option;
@@ -17,11 +19,31 @@ class Register extends React.Component {
         autoCompleteResult: [],
     };
 
+    checkInsert = (err, id) => {
+        console.log(err);
+        console.log(id);
+        if(id) {
+            console.log('注册成功');
+            this.props.history.push('/');
+        } else {
+            console.log('已注册用户');
+        }                
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                const insertUser = Users.insert({
+                    email: values.email,
+                    account: values.nickname,
+                    password: values.password,
+                    phone: values.phone,
+                    captch: values.captch,
+                    website: values.website,
+                    createdAt: new Date(),
+                }, this.checkInsert);
             } else {
                 console.log('错误信息：', err);
             }
@@ -34,6 +56,7 @@ class Register extends React.Component {
     }
     checkPassword = (rule, value, callback) => {
         const form = this.props.form;
+        console.log(value+','+form.getFieldValue('password'));
         if (value && value !== form.getFieldValue('password')) {
             callback('两次输入密码不一致！');
         } else {
@@ -46,6 +69,13 @@ class Register extends React.Component {
             form.validateFields(['confirm'], { force: true });
         }
         callback();
+    }
+    cheackAgreement = (rule, value, callback) => {
+        if(!value) {
+            callback('请阅读协议并确定!');
+        } else {
+            callback();
+        }
     }
 
     handleWebsiteChange = (value) => {
@@ -165,7 +195,7 @@ class Register extends React.Component {
                         hasFeedback
                     >
                         {getFieldDecorator('nickname', {
-                            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+                            rules: [{ required: true, message: '请输入你的昵称!', whitespace: true }],
                         })(
                             <Input />
                             )}
@@ -176,7 +206,7 @@ class Register extends React.Component {
                     >
                         {getFieldDecorator('residence', {
                             initialValue: ['zhejiang', 'hangzhou', 'xihu'],
-                            rules: [{ type: 'array', required: true, message: 'Please select your habitual residence!' }],
+                            rules: [{ type: 'array', required: true, message: '请选择您惯常居住的地方！' }],
                         })(
                             <Cascader options={residences} />
                             )}
@@ -228,6 +258,7 @@ class Register extends React.Component {
                     <Form.Item {...tailFormItemLayout} style={{ marginBottom: 8 }}>
                         {getFieldDecorator('agreement', {
                             valuePropName: 'checked',
+                            rules: [{ validator: this.cheackAgreement }],
                         })(
                             <Checkbox>我已经阅读<a href="">协议</a></Checkbox>
                             )}
@@ -242,4 +273,8 @@ class Register extends React.Component {
 }
 
 const WrappedRegisterForm = Form.create()(Register);
-export default withRouter(WrappedRegisterForm);
+export default createContainer(() => {
+    return {
+        users: Users.find({}).fetch(),
+    };
+}, WrappedRegisterForm);

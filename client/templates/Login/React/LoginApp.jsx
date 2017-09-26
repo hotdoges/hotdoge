@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createContainer } from 'meteor/react-meteor-data';
 
 import {Button, Form, Input, Icon, Checkbox} from 'antd';
 import Register from './Register.jsx';
 
+import { createContainer } from 'meteor/react-meteor-data';
 import { Users } from '../../../../imports/collections/users.js';
 
 
@@ -33,6 +33,18 @@ class LoginApp extends React.Component {
             return ;
         }
     }
+    
+    // checkAccount = (rule, value, callback) => {
+    //     const user = Users.findOne({'account': value});
+    //     if(!user) {
+    //         callback('账号错误或者没注册账号');
+    //     }
+    // }
+    // checkPassword = (rule, value, callback) => {
+    //     if(!(value == user.password)) {
+    //         callback('密码错误');
+    //     }
+    // }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -47,6 +59,9 @@ class LoginApp extends React.Component {
                     return;
                 } else if (user.password == values.password){
                     console.log("成功登录");
+                    this.setState({userName: values.userName});
+                    this.setState({password: values.password});
+                    document.getElementById('tip').innerHTML = "";
                     window.location = "/test/";
                     return;
                 } else {
@@ -74,14 +89,18 @@ class LoginApp extends React.Component {
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <Form.Item>
                             {getFieldDecorator('userName', {
-                                rules: [{ required: true, message: '请输入账号!' }],
+                                rules: [{ 
+                                    required: true, message: '请输入账号!', 
+                                }],
                             })(
                                 <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="用户名" />
                             )}
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
-                                rules: [{ required: true, min: 3, message: '请输入密码'}],
+                                rules: [{ 
+                                    required: true, message: '请输入密码',
+                                }],
                             })(
                                 <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="密码" />
                             )}
