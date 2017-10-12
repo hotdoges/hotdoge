@@ -62,7 +62,7 @@ class LoginApp extends React.Component {
                     this.setState({userName: values.userName});
                     this.setState({password: values.password});
                     document.getElementById('tip').innerHTML = "";
-                    window.location = "/test/";
+                    window.location = "/admin/";
                     return;
                 } else {
                     console.log("密码错误");

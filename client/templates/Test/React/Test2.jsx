@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router'
 
 class Test2 extends React.Component {
     constructor(props) {
         super(props);
+        // this.props.router.push('/test');
+        
     }
-
+    
     render() {
         return (
             <div>
@@ -19,4 +22,4 @@ Test2.propTypes = {
 
 }
 
-export default Test2;
+export default withRouter(Test2);
