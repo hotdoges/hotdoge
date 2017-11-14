@@ -1,7 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-
-
-import '../imports/collections/users';
+// import '../imports/collections/users';
 
 
 Meteor.startup(() => {

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import { Meteor } from 'meteor/meteor';
+import { createContainer } from 'meteor/react-meteor-data';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -8,11 +10,38 @@ const SubMenu = Menu.SubMenu;
 class SiderLayout extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      collapsed: false,
+      user: '',
+    };
   }
-  state = {
-    collapsed: false,
-  };
+
+  testButton() {
+    console.log(Meteor.user());
+    console.log(this.props.users);
+  }
+
+  //不知道加载组件什么时候才加载Meteor.user()
+  componentDidMount() {
+    console.log('修改state', Meteor.user());
+    this.setState({
+      user: Meteor.user(),
+    });
+    console.log('state: ', this.state.user);
+  }
+
+  logout() {
+    console.log(Meteor.user());
+    Meteor.logout(
+      (err) => {
+        if(err) {
+          console.log('logout: ', err);
+          return;
+        }
+        console.log('登出');
+      }
+    );
+  }
 
   onCollapse = (collapsed) => {
     console.log(collapsed);
@@ -22,6 +51,7 @@ class SiderLayout extends React.Component {
   render() {
     return (
       <Layout style={{ minHeight: '100vh' }}>
+      <button type="button" onClick={this.testButton.bind(this)}>测试</button>
         <Sider
           collapsible
           collapsed={this.state.collapsed}
@@ -33,7 +63,7 @@ class SiderLayout extends React.Component {
               key="sub1"
               title={<span><Icon type="user" /><span>User</span></span>}
             >
-              <Menu.Item key="3">Tom</Menu.Item>
+              <Menu.Item key="3">{this.state.user}</Menu.Item>
               <Menu.Item key="4">Bill</Menu.Item>
               <Menu.Item key="5">Alex</Menu.Item>
             </SubMenu>
@@ -48,7 +78,12 @@ class SiderLayout extends React.Component {
               key="sub3"
               title={<span><Icon type="setting" /><span>设置</span></span>}
             >
-              <Menu.Item key="sys" ><span><Icon type="logout" /><span>登出</span></span></Menu.Item>
+              <Menu.Item key="sys" >
+                <span>
+                  <Icon type="logout" />
+                  <span onClick={this.logout.bind(this)}>登出</span>
+                </span>
+              </Menu.Item>
             </SubMenu>
             <Menu.Item key="9">
               <Icon type="file" />
@@ -76,6 +111,10 @@ class SiderLayout extends React.Component {
   }
 }
 
-export default SiderLayout;
+export default createContainer(() => {
+  return {
+    users: Meteor.users.find({}).fetch(),
+  };
+}, SiderLayout);
 
 // ReactDOM.render(<SiderDemo />, mountNode);

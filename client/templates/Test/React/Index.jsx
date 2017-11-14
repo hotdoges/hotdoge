@@ -7,7 +7,7 @@ import {
     BrowserRouter, Link, Switch, withRouter
 } from 'react-router-dom';
 
-import MainLayout from './Layout/MainLayout.jsx';
+// import MainLayout from './Layout/MainLayout.jsx';
 import OneLayout from './Layout/OneLayout.jsx';
 import Test1 from './Test1.jsx';
 import Test2 from './Test2.jsx';
@@ -20,8 +20,8 @@ const About = () => (
 
 const routes = [
     {
-        path: '/main',
-        component: MainLayout
+        // path: '/main',
+        // component: MainLayout
     },
     {
         path: '/one',
@@ -54,7 +54,7 @@ class Index extends Component {
                     <hr />
 
                     <Switch>
-                        <Route exact path="/main" component={MainLayout} />
+                        {/* <Route exact path="/main" component={MainLayout} /> */}
                         <Route exact path="/one" component={OneLayout} />
                         {/* <Route exact path="/test1" component={Test1} /> */}
                         <Route exact path="/test2" component={Test2} />

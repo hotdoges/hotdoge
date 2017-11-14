@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { Link } from 'react-router-dom';
 
 import {Button, Form, Input, Icon, Checkbox} from 'antd';
 import Register from './Register.jsx';
 
 import { createContainer } from 'meteor/react-meteor-data';
+// import { Users } from '../../../../imports/collections/users.js';
 
 
 class LoginApp extends React.Component {
@@ -23,26 +22,56 @@ class LoginApp extends React.Component {
         this.props.history.push('/register');
     }
 
-    loginErr = (err) => {
-        if(err) {
-            console.log('login_err: ', err);
-        } else {
-            console.log('login_Success: Success!');
-            location.replace("/admin");
-        }  
+    checkLoginBtnDisabled() {
+        if(this.state.userName || this.state.password){
+            return false;
+        }
+        return true;
     }
+
+    btnOnClickLogin() {
+        if(this.checkLoginBtnDisabled()) {
+            return ;
+        }
+    }
+    
+    // checkAccount = (rule, value, callback) => {
+    //     const user = Users.findOne({'account': value});
+    //     if(!user) {
+    //         callback('账号错误或者没注册账号');
+    //     }
+    // }
+    // checkPassword = (rule, value, callback) => {
+    //     if(!(value == user.password)) {
+    //         callback('密码错误');
+    //     }
+    // }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            console.log('antd_form: ', values);
             if(!err) {
-                Meteor.loginWithPassword(
-                    values.userName,
-                    values.password,
-                    this.loginErr);
+                console.log('收到的值: ', values);
+
+                const user = Users.findOne({'account': values.userName});
+                if(!user) {
+                    console.log("账号不正确");
+                    document.getElementById('tip').innerHTML = "账号不正确";
+                    return;
+                } else if (user.password == values.password){
+                    console.log("成功登录");
+                    this.setState({userName: values.userName});
+                    this.setState({password: values.password});
+                    document.getElementById('tip').innerHTML = "";
+                    window.location = "/admin/";
+                    return;
+                } else {
+                    console.log("密码错误");
+                    document.getElementById('tip').innerHTML = "密码错误";
+                }
+                
             }else {
-                console.log('antd_err: ', err)
+                console.log('err: ', err)
             }
         });
     }

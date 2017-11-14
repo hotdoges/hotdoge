@@ -16,10 +16,10 @@ function renderMyApp() {
     if (document.getElementById('app'))
         return ReactDOM.render((
             <Router >
-                <Switch>
+                <div>
                     <Route exact path="/" component={LoginApp} />
                     <Route path="/register" component={Register} />
-                </Switch>
+                </div>
             </Router>
         ), document.getElementById('app'));
     else
